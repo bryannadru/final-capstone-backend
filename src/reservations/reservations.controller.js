@@ -225,6 +225,7 @@ module.exports = {
     asyncErrorBoundary(validateData),
     asyncErrorBoundary(validateReservationId),
     asyncErrorBoundary(validateUpdateBody),
+    asyncErrorBoundary(validateDate),
     asyncErrorBoundary(update),
   ],
   edit: [
