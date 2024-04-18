@@ -230,9 +230,9 @@ module.exports = {
   ],
   edit: [
     asyncErrorBoundary(validateData),
-    asyncErrorBoundary(validateDate),
     asyncErrorBoundary(validateReservationId),
     asyncErrorBoundary(validateBody),
+    asyncErrorBoundary(validateDate),
     asyncErrorBoundary(edit),
   ],
   read: [asyncErrorBoundary(validateReservationId), asyncErrorBoundary(read)],
