@@ -76,6 +76,8 @@ async function validateDate(request, response, next) {
   ); */
   const reserveDate = new Date(request.body.data.reservation_date);
   const todaysDate = new Date();
+  const { data: { reservation_time } = {} } = req.body;
+
 
   if (reserveDate.getDay() === 2) {
     return next({
@@ -92,7 +94,7 @@ async function validateDate(request, response, next) {
     });
   }
 
-  if (
+  /*if (
     reserveDate.getHours() < 10 ||
     (reserveDate.getHours() === 10 && reserveDate.getMinutes() < 30)
   ) {
@@ -109,6 +111,12 @@ async function validateDate(request, response, next) {
     return next({
       status: 400,
       message: "'reservation_time' field: restaurant is closed after 10:30PM",
+    });
+  } */
+  if (reservation_time < '10:30' || reservation_time > '21:30') {
+    return next({
+      status: 400,
+      message: 'Invalid reservation_time. Time must be before after 9:30 or before 10:30pm.',
     });
   }
 
