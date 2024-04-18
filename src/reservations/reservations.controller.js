@@ -71,13 +71,10 @@ async function validateBody(request, response, next) {
   * during the restaurant's open hours
 */
 async function validateDate(request, response, next) {
- /* const reserveDate = new Date(
+  const reserveDate = new Date(
     `${request.body.data.reservation_date}T${request.body.data.reservation_time}:00.000`
-  ); */
-  const reserveDate = new Date(request.body.data.reservation_date);
+  );
   const todaysDate = new Date();
-  const { data: { reservation_time } = {} } = request.body;
-
 
   if (reserveDate.getDay() === 2) {
     return next({
@@ -86,7 +83,7 @@ async function validateDate(request, response, next) {
     });
   }
 
-  if (reserveDate.getTime() < todaysDate.getTime()) {
+  if (reserveDate < todaysDate) {
     return next({
       status: 400,
       message:
@@ -94,7 +91,7 @@ async function validateDate(request, response, next) {
     });
   }
 
-  /*if (
+  if (
     reserveDate.getHours() < 10 ||
     (reserveDate.getHours() === 10 && reserveDate.getMinutes() < 30)
   ) {
@@ -112,15 +109,9 @@ async function validateDate(request, response, next) {
       status: 400,
       message: "'reservation_time' field: restaurant is closed after 10:30PM",
     });
-  } */
-  if (reservation_time < '10:30' || reservation_time > '21:30') {
-    return next({
-      status: 400,
-      message: 'Invalid reservation_time. Time must be before after 9:30 or before 10:30pm.',
-    });
   }
 
-  /*if (
+  if (
     reserveDate.getHours() > 21 ||
     (reserveDate.getHours() === 21 && reserveDate.getMinutes() > 30)
   ) {
@@ -129,7 +120,7 @@ async function validateDate(request, response, next) {
       message:
         "'reservation_time' field: reservation must be made at least an hour before closing (10:30PM)",
     });
-  } */
+  }
 
   next();
 }
@@ -234,7 +225,6 @@ module.exports = {
     asyncErrorBoundary(validateData),
     asyncErrorBoundary(validateReservationId),
     asyncErrorBoundary(validateUpdateBody),
-    asyncErrorBoundary(validateDate),
     asyncErrorBoundary(update),
   ],
   edit: [
