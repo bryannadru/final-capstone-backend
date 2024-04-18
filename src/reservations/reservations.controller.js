@@ -76,7 +76,7 @@ async function validateDate(request, response, next) {
   ); */
   const reserveDate = new Date(request.body.data.reservation_date);
   const todaysDate = new Date();
-  const { data: { reservation_time } = {} } = req.body;
+  const { data: { reservation_time } = {} } = request.body;
 
 
   if (reserveDate.getDay() === 2) {
@@ -120,7 +120,7 @@ async function validateDate(request, response, next) {
     });
   }
 
-  if (
+  /*if (
     reserveDate.getHours() > 21 ||
     (reserveDate.getHours() === 21 && reserveDate.getMinutes() > 30)
   ) {
@@ -129,7 +129,7 @@ async function validateDate(request, response, next) {
       message:
         "'reservation_time' field: reservation must be made at least an hour before closing (10:30PM)",
     });
-  }
+  } */
 
   next();
 }
