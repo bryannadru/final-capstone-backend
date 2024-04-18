@@ -71,11 +71,10 @@ async function validateBody(request, response, next) {
   * during the restaurant's open hours
 */
 async function validateDate(request, response, next) {
-
-  console.log('?????')
-  const reserveDate = new Date(
+ /* const reserveDate = new Date(
     `${request.body.data.reservation_date}T${request.body.data.reservation_time}:00.000`
-  );
+  ); */
+  const reserveDate = new Date(request.body.data.reservation_date);
   const todaysDate = new Date();
 
   if (reserveDate.getDay() === 2) {
