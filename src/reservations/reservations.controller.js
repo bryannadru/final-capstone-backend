@@ -84,7 +84,7 @@ async function validateDate(request, response, next) {
     });
   }
 
-  if (reserveDate < todaysDate) {
+  if (reserveDate.getTime() < todaysDate.getTime()) {
     return next({
       status: 400,
       message:
