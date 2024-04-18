@@ -76,6 +76,13 @@ async function validateDate(request, response, next) {
   );
   const todaysDate = new Date();
 
+  if (!isValidDateTime(request.body.data.reservation_date, request.body.data.reservation_time)) {
+    return next({
+      status: 400,
+      message: "Invalid date or time format.",
+    });
+  }
+
   if (reserveDate.getDay() === 2) {
     return next({
       status: 400,
@@ -83,7 +90,7 @@ async function validateDate(request, response, next) {
     });
   }
 
-  if (reserveDate < todaysDate) {
+  if (reserveDate.getTime() < todaysDate.getTime) {
     return next({
       status: 400,
       message:
