@@ -75,14 +75,7 @@ async function validateDate(request, response, next) {
     `${request.body.data.reservation_date}T${request.body.data.reservation_time}:00.000`
   );
   const todaysDate = new Date();
-
-  if (!isValidDateTime(request.body.data.reservation_date, request.body.data.reservation_time)) {
-    return next({
-      status: 400,
-      message: "Invalid date or time format.",
-    });
-  }
-
+  
   if (reserveDate.getDay() === 2) {
     return next({
       status: 400,
