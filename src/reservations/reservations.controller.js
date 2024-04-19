@@ -75,8 +75,8 @@ async function validateDate(request, response, next) {
     `${request.body.data.reservation_date}T${request.body.data.reservation_time}:00.000`
   );
   const todaysDate = new Date();
-  
-  if (reserveDate.getDay() === 2) {
+  const day = new Date(date).getUTCDay();  
+  if (day === 2){
     return next({
       status: 400,
       message: "'reservation_date' field: restaurant is closed on tuesday",
