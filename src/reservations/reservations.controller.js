@@ -70,22 +70,26 @@ async function validateBody(request, response, next) {
   * on a day that the restaurant is open
   * during the restaurant's open hours
 */
-async function validateDate(request, response, next) {
-  /*const reserveDate = new Date(
-    `${request.body.data.reservation_date}T${request.body.data.reservation_time}:00.000`
-  ); */
-  const { data: { reservation_date, reservation_time } = {} } = request.body;  
-  const reserveDate = new Date(`${reservation_date}T${reservation_time}Z`);  
-  const todaysDate = new Date();
 
+async function onTuesday(req, res, next) {
+  const reserveDate = new Date(req.body.data.reservation_date)
   if (reserveDate.getUTCDay() === 2) {
     return next({
       status: 400,
       message: "'reservation_date' field: restaurant is closed on tuesday",
     });
   }
+  next()
+}
 
-  if (reserveDate.getTime() < todaysDate.getTime) {
+
+async function validateDate(request, response, next) {
+  const reserveDate = new Date(
+    `${request.body.data.reservation_date}T${request.body.data.reservation_time}:00.000`
+  );
+  const todaysDate = new Date();
+
+  if (reserveDate < todaysDate) {
     return next({
       status: 400,
       message:
@@ -221,6 +225,7 @@ module.exports = {
     asyncErrorBoundary(validateData),
     asyncErrorBoundary(validateBody),
     asyncErrorBoundary(validateDate),
+    asyncErrorBoundary(onTuesday),
     asyncErrorBoundary(create),
   ],
   update: [
@@ -234,6 +239,7 @@ module.exports = {
     asyncErrorBoundary(validateReservationId),
     asyncErrorBoundary(validateBody),
     asyncErrorBoundary(validateDate),
+    asyncErrorBoundary(onTuesday),
     asyncErrorBoundary(edit),
   ],
   read: [asyncErrorBoundary(validateReservationId), asyncErrorBoundary(read)],
